@@ -22,6 +22,7 @@ jobs:
       run: cargo test --verbose
     - name: Release to Github
       env:
-        VERSION: ${{ cargo metadata --no-deps --format-version 1 | jq -r ".packages[0].version" }}
         GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      run: git tag $VERSION && gh release create $VERSION --repo="$GITHUB_REPOSITORY" --title=$VERSION --generate-notes
+      run: |
+        VERSION=$(cargo metadata --no-deps --format-version 1)
+        git tag $VERSION && gh release create $VERSION --repo="$GITHUB_REPOSITORY" --title=$VERSION --generate-notes
