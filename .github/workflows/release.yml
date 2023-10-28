@@ -17,10 +17,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --release --verbose
     - name: Run tests
       run: cargo test --verbose
     - name: Release to Github
       env:
         GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      run: VERSION=$(cargo metadata --no-deps --format-version 1 | jq -r ".packages[0].version") && git tag "$VERSION" && gh release create "$VERSION" --repo="$GITHUB_REPOSITORY" --title="$VERSION" --generate-notes
+      run: VERSION=$(cargo metadata --no-deps --format-version 1 | jq -r ".packages[0].version") && git tag "$VERSION" && gh release create "$VERSION" "target/release/mass-dvd-backup" --repo="$GITHUB_REPOSITORY" --title="$VERSION" --generate-notes
