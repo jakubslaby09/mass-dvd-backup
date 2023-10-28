@@ -1,0 +1,27 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-and-release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+    - name: Release to Github
+      env:
+        VERSION: ${{ cargo metadata --no-deps --format-version 1 | jq -r ".packages[0].version" }}
+        GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      run: git tag $VERSION && gh release create $VERSION --repo="$GITHUB_REPOSITORY" --title=$VERSION --generate-notes
