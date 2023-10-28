@@ -23,6 +23,4 @@ jobs:
     - name: Release to Github
       env:
         GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-      run: |
-        VERSION=$(cargo metadata --no-deps --format-version 1)
-        git tag $VERSION && gh release create $VERSION --repo="$GITHUB_REPOSITORY" --title=$VERSION --generate-notes
+      run: VERSION=$(cargo metadata --no-deps --format-version 1 | jq -r ".packages[0].version") git tag $VERSION && gh release create $VERSION --repo="$GITHUB_REPOSITORY" --title=$VERSION --generate-notes
