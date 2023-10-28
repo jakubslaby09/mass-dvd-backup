@@ -1,0 +1,11 @@
+[package]
+name = "mass-dvd-backup"
+version = "1.0.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+eject = "0.1.1"
+ffmpeg-sidecar = "0.5.1"
+sys-mount = "2.1.0"
